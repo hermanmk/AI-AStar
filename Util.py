@@ -1,9 +1,20 @@
 # coding=UTF-8
+from turtle import *
+
 __author__ = 'Øyvind & Herman'
 
 # Dictionary with the different arc costs based on the square's value
-terrains = {'.': 1, 'w': 100, 'm': 50, 'f': 10, 'g': 5, 'r': 1}
+terrains = {'.': 1, 'w': 100, 'm': 50, 'f': 10, 'g': 5, 'r': 1, 'A': 1, 'B': 1}
+# Dictionary with terrain colors for the graphics
+colors = {'.': '#ffffff', '#': '#000000', 'w': '#3f51b5', 'm': '#9e9e9e',
+          'f': '#4caf50', 'g': '#8bc34a', 'r': '#795548', 'A': '#ff0000', 'B': '#00ff00'}
 
+# Initial position and speed of the pencil
+speed(0)
+penup()
+setpos(-500, 200)
+pendown()
+screensize(1000, 1000)
 
 class Square:
 
@@ -27,8 +38,6 @@ class Square:
         self.h = abs(self.x - other_sq.x) + abs(self.y - other_sq.y)
 
     def get_arc_cost(self):
-        if self.value == 'A' or self.value == 'B':
-            return 1
         return terrains[self.value]
 
     def calculate_f(self):
@@ -64,14 +73,48 @@ def read_from_file(file):
                 elif char == 'B':
                     goal = Square(char, x, y)
                 x += 1
+                fillcolor(colors[char])
+                begin_fill()
+                for i in range(4):
+                    forward(30)
+                    left(90)
+                end_fill()
+                forward(30)
             board.append(row)
             y += 1
+            penup()
+            goto(-500, ycor() - 30)
+            pendown()
+
     return [board, start, goal]
 
 
 def print_list(l):
     for n in l:
         print(str(n.f) + ' - ' + str(n))
+
+
+def draw_best_route(final_route):
+    shape('turtle')
+    fillcolor('purple')
+    pencolor('purple')
+    pensize(4)
+    speed(1)
+    penup()
+    start_position_x = (final_route[0].x) * 30
+    start_position_y = (final_route[0].y - 1) * -30
+    setpos(-500 + start_position_x + 15, 200 + start_position_y - 15)
+    pendown()
+    for i in range(0, len(final_route) - 1):
+        if final_route[i].x < final_route[i + 1].x:
+            goto(xcor() + 30, ycor())
+        elif final_route[i].x > final_route[i + 1].x:
+            goto(xcor() - 30, ycor())
+        elif final_route[i].y < final_route[i + 1].y:
+            goto(xcor(), ycor() - 30)
+        else:
+            goto(xcor(), ycor() + 30)
+    exitonclick()
 
 
 def attach_and_eval(node, parent, goal):
@@ -100,6 +143,7 @@ def handle_solution(node, start_sq):
         node = node.parent
     print('Best path from A to B:')
     print_list(final_route)
+    draw_best_route(final_route)
 
 
 def a_star(board_name):
