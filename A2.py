@@ -3,4 +3,4 @@ import Util as U  # Provides the Square class, A* algorithm methods and helper m
 __author__ = 'Øyvind & Herman'
 
 
-U.a_star('board-2-2')
+U.a_star('board-2-1')
