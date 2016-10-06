@@ -115,7 +115,7 @@ def draw_best_route(final_route):
             goto(xcor(), ycor() - 30)
         else:
             goto(xcor(), ycor() + 30)
-    exitonclick()
+    done()
 
 
 def draw_closed(x, y):

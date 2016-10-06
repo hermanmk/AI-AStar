@@ -40,7 +40,7 @@ def a_star_with_bfs(board_name):
         #  SORTING OF open_nodes IS OMITTED BECAUSE THIS IMPLEMENTATION OF A* USES BFS
 
 
-#a_star_with_bfs('board-2-1')
+#a_star_with_bfs('board-2-4')
 
 
 def a_star_with_dijkstra(board_name):
@@ -80,4 +80,4 @@ def a_star_with_dijkstra(board_name):
         #  Sort the open_nodes list in descending order based on the f-function, so that pop gets the least costly node
         open_nodes.sort(key=lambda s: s.g, reverse=True)
 
-a_star_with_dijkstra('board-2-1')
+a_star_with_dijkstra('board-2-4')
