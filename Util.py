@@ -16,6 +16,7 @@ setpos(-500, 200)
 pendown()
 screensize(1000, 1000)
 
+
 class Square:
 
     def __init__(self, value, x, y):
@@ -100,9 +101,9 @@ def draw_best_route(final_route):
     pencolor('purple')
     pensize(4)
     speed(1)
-    penup()
     start_position_x = (final_route[0].x) * 30
     start_position_y = (final_route[0].y - 1) * -30
+    penup()
     setpos(-500 + start_position_x + 15, 200 + start_position_y - 15)
     pendown()
     for i in range(0, len(final_route) - 1):
@@ -115,6 +116,28 @@ def draw_best_route(final_route):
         else:
             goto(xcor(), ycor() + 30)
     exitonclick()
+
+
+def draw_closed(x, y):
+    square_pos_x = x * 30
+    square_pos_y = (y - 1) * -30
+    penup()
+    setpos(-500 + square_pos_x + 15, 200 + square_pos_y - 25)
+    pendown()
+    fillcolor('#ff9800')
+    begin_fill()
+    circle(10)
+    end_fill()
+
+
+def draw_open(x, y):
+    square_pos_x = x * 30
+    square_pos_y = (y - 1) * -30
+    penup()
+    pencolor('#ff9800')
+    setpos(-500 + square_pos_x + 15, 200 + square_pos_y - 25)
+    pendown()
+    circle(10)
 
 
 def attach_and_eval(node, parent, goal):
@@ -146,7 +169,7 @@ def handle_solution(node, start_sq):
     draw_best_route(final_route)
 
 
-def a_star(board_name):
+def a_star(board_name, draw_real_time):
     #  Initializing the board through reading the file
     init = read_from_file(board_name)  # Returns a list containing the full board, start and goal square
     board = init[0]
@@ -161,6 +184,8 @@ def a_star(board_name):
     while open_nodes:
         node = open_nodes.pop()
         closed.append(node)
+        if draw_real_time:
+            draw_closed(node.x, node.y)
         print(node)
         if node == goal_sq:  # We have arrived at the solution
             handle_solution(node, start_sq)
@@ -174,6 +199,8 @@ def a_star(board_name):
                     if child not in closed and child not in open_nodes:  # We have not yet generated this node
                         attach_and_eval(child, node, goal_sq)
                         open_nodes.append(child)
+                        if draw_real_time:
+                            draw_open(child.x, child.y)
                     elif node.g + child.get_arc_cost() < child.g:  # Found a cheaper path to this node, thus a better parent
                         attach_and_eval(child, node, goal_sq)  # Recalculate the costs for the node
                         if child in closed:  # If the node was already visited, make sure the children are also updated

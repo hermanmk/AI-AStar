@@ -18,6 +18,7 @@ def a_star_with_bfs(board_name):
     while open_nodes:
         node = open_nodes.pop()
         closed.append(node)
+        U.draw_closed(node.x, node.y)
         print(node)
         if node == goal_sq:  # We have arrived at the solution
             U.handle_solution(node, start_sq)
@@ -31,6 +32,7 @@ def a_star_with_bfs(board_name):
                     if child not in closed and child not in open_nodes:  # We have not yet generated this node
                         U.attach_and_eval(child, node, goal_sq)
                         open_nodes.insert(0, child)
+                        U.draw_open(child.x, child.y)
                     elif node.g + child.get_arc_cost() < child.g:  # Found a cheaper path to this node, thus a better parent
                         U.attach_and_eval(child, node, goal_sq)  # Recalculate the costs for the node
                         if child in closed:  # If the node was already visited, make sure the children are also updated
@@ -38,7 +40,7 @@ def a_star_with_bfs(board_name):
         #  SORTING OF open_nodes IS OMITTED BECAUSE THIS IMPLEMENTATION OF A* USES BFS
 
 
-# a_star_with_bfs('board-1-1')
+#a_star_with_bfs('board-2-1')
 
 
 def a_star_with_dijkstra(board_name):
@@ -56,6 +58,7 @@ def a_star_with_dijkstra(board_name):
     while open_nodes:
         node = open_nodes.pop()
         closed.append(node)
+        U.draw_closed(node.x, node.y)
         print(node)
         if node == goal_sq:  # We have arrived at the solution
             U.handle_solution(node, start_sq)
@@ -69,6 +72,7 @@ def a_star_with_dijkstra(board_name):
                     if child not in closed and child not in open_nodes:  # We have not yet generated this node
                         U.attach_and_eval(child, node, goal_sq)
                         open_nodes.append(child)
+                        U.draw_open(child.x, child.y)
                     elif node.g + child.get_arc_cost() < child.g:  # Found a cheaper path to this node, thus a better parent
                         U.attach_and_eval(child, node, goal_sq)  # Recalculate the costs for the node
                         if child in closed:  # If the node was already visited, make sure the children are also updated
@@ -76,4 +80,4 @@ def a_star_with_dijkstra(board_name):
         #  Sort the open_nodes list in descending order based on the f-function, so that pop gets the least costly node
         open_nodes.sort(key=lambda s: s.g, reverse=True)
 
-a_star_with_dijkstra('board-1-1')
+a_star_with_dijkstra('board-2-1')
