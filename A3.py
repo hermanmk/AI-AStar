@@ -4,6 +4,11 @@ __author__ = 'Øyvind & Herman'
 
 
 def a_star_with_bfs(board_name):
+    """
+    The core of the A* algorithm with the agenda loop and main conditionals
+    This implementation has been altered by not sorting the list of open nodes
+    Thus this version of A* is using Breadth First Search
+    """
     #  Initializing the board through reading the file
     init = U.read_from_file(board_name)  # Returns a list containing the full board, start and goal square
     board = init[0]
@@ -44,6 +49,11 @@ def a_star_with_bfs(board_name):
 
 
 def a_star_with_dijkstra(board_name):
+    """
+    The core of the A* algorithm with the agenda loop and main conditionals
+    This implementation has been altered by sorting the list of open nodes by the g-function instead of the f-function
+    Thus this version of A* is using Dijkstra's algorithm
+    """
     #  Initializing the board through reading the file
     init = U.read_from_file(board_name)  # Returns a list containing the full board, start and goal square
     board = init[0]
@@ -77,7 +87,7 @@ def a_star_with_dijkstra(board_name):
                         U.attach_and_eval(child, node, goal_sq)  # Recalculate the costs for the node
                         if child in closed:  # If the node was already visited, make sure the children are also updated
                             U.propagate_path_improvements(child)
-        #  Sort the open_nodes list in descending order based on the f-function, so that pop gets the least costly node
+        #  Sort the open_nodes list in descending order based on the g-function instead of the f-function
         open_nodes.sort(key=lambda s: s.g, reverse=True)
 
 a_star_with_dijkstra('board-2-4')

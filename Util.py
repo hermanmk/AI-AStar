@@ -18,6 +18,9 @@ screensize(1000, 1000)
 
 
 class Square:
+    """
+    Class representing a single square on the board, also referenced as a "node"
+    """
 
     def __init__(self, value, x, y):
         self.value = value
@@ -96,6 +99,9 @@ def print_list(l):
 
 
 def draw_best_route(final_route):
+    """
+    Draws the optimal route/path AFTER the algorithm has found it
+    """
     shape('turtle')
     fillcolor('purple')
     pencolor('purple')
@@ -119,6 +125,9 @@ def draw_best_route(final_route):
 
 
 def draw_closed(x, y):
+    """
+    Draws the recently closed (visited) node
+    """
     square_pos_x = x * 30
     square_pos_y = (y - 1) * -30
     penup()
@@ -131,6 +140,9 @@ def draw_closed(x, y):
 
 
 def draw_open(x, y):
+    """
+    Draws the newly opened (discovered) node
+    """
     square_pos_x = x * 30
     square_pos_y = (y - 1) * -30
     penup()
@@ -141,6 +153,9 @@ def draw_open(x, y):
 
 
 def attach_and_eval(node, parent, goal):
+    """
+    Part of the A* algorithm. Sets the parent of the node and calculates the g-, h- and f-function
+    """
     node.set_parent(parent)
     node.g = parent.g + node.get_arc_cost()
     node.heuristic(goal)
@@ -148,6 +163,9 @@ def attach_and_eval(node, parent, goal):
 
 
 def propagate_path_improvements(parent):
+    """
+    When a cheaper path to a node is found, this method recursively updates all its children
+    """
     for child in parent.children:
         if parent.g + 1 < child.g:
             child.set_parent(parent)
@@ -158,6 +176,9 @@ def propagate_path_improvements(parent):
 
 
 def handle_solution(node, start_sq):
+    """
+    Backtracks all the nodes of the optimal path and prints them chronologically
+    """
     final_route = []
     while True:  # Find the best path by backtracking through all the parents, starting with the goal node
         final_route.insert(0, node)
@@ -170,6 +191,9 @@ def handle_solution(node, start_sq):
 
 
 def a_star(board_name, draw_real_time):
+    """
+    The core of the A* algorithm with the agenda loop and main conditionals
+    """
     #  Initializing the board through reading the file
     init = read_from_file(board_name)  # Returns a list containing the full board, start and goal square
     board = init[0]
