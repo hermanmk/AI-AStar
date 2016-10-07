@@ -78,6 +78,7 @@ def read_from_file(file):
                     goal = Square(char, x, y)
                 x += 1
                 fillcolor(colors[char])
+                # Draws a square for each node in the board with a color based on node type
                 begin_fill()
                 for i in range(4):
                     forward(30)
@@ -87,6 +88,7 @@ def read_from_file(file):
             board.append(row)
             y += 1
             penup()
+            # Go back to start position for x and the new y position for the next row to be drawn
             goto(-500, ycor() - 30)
             pendown()
 
@@ -107,11 +109,14 @@ def draw_best_route(final_route):
     pencolor('purple')
     pensize(4)
     speed(1)
-    start_position_x = (final_route[0].x) * 30
-    start_position_y = (final_route[0].y - 1) * -30
+    # Finds the start position of the node in the graphical grid
+    start_pos_x = (final_route[0].x) * 30
+    start_pos_y = (final_route[0].y - 1) * -30
     penup()
-    setpos(-500 + start_position_x + 15, 200 + start_position_y - 15)
+    # Sets the start position of the drawn path in the middle of the start node
+    setpos(-500 + start_pos_x + 15, 200 + start_pos_y - 15)
     pendown()
+    # Draws right, left, down or up based on the position of the next node in the list
     for i in range(0, len(final_route) - 1):
         if final_route[i].x < final_route[i + 1].x:
             goto(xcor() + 30, ycor())
@@ -131,6 +136,7 @@ def draw_closed(x, y):
     square_pos_x = x * 30
     square_pos_y = (y - 1) * -30
     penup()
+    # Sets the position on the position (15, 25) in the square of size (30,30) and draws a filled circle
     setpos(-500 + square_pos_x + 15, 200 + square_pos_y - 25)
     pendown()
     fillcolor('#ff9800')
@@ -147,6 +153,7 @@ def draw_open(x, y):
     square_pos_y = (y - 1) * -30
     penup()
     pencolor('#ff9800')
+    # Sets the position on the position (15, 25) in the square of size (30,30) and draws a filled circle
     setpos(-500 + square_pos_x + 15, 200 + square_pos_y - 25)
     pendown()
     circle(10)
